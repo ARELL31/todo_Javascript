@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de tareas</title>
+ <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Lista de Tareas</h1>
+      <p class="subtitle">Organiza tus tareas diarias y guárdalas como archivo JSON para persistencia</p>
+    </header>
+    
+    <div class="app-body">
+      <div class="input-group">
+        <input type="text" id="tareaInput" placeholder="Escribe una nueva tarea...">
+        <button id="agregarBtn" class="btn btn-primary">
+          <i class="fas fa-plus"></i> Agregar
+        </button>
+      </div>
+      
+      <div class="controls">
+        <button id="marcarTodasBtn" class="btn btn-secondary">
+          <i class="fas fa-check-double"></i> Marcar todas
+        </button>
+        <button id="limpiarBtn" class="btn btn-danger">
+          <i class="fas fa-trash"></i> Limpiar completadas
+        </button>
+        <button id="guardarJsonBtn" class="btn btn-primary">
+          <i class="fas fa-download"></i> Descargar JSON
+        </button>
+      </div>
+      
+      <ul id="listaTareas"></ul>
+      
+      <div class="json-section">
+        <h3>Datos en formato JSON</h3>
+        <div class="json-content" id="jsonPreview">
+          {/* El contenido JSON se mostrará aquí */}
+        </div>
+        <button id="copiarJsonBtn" class="btn btn-secondary">
+          <i class="fas fa-copy"></i> Copiar JSON
+        </button>
+      </div>
+    </div>
+    
+    <footer>
+      <p>Las tareas se guardan automáticamente en el almacenamiento local de tu navegador</p>
+    </footer>
+  </div>
+  
+  <div class="notification" id="notification">
+    ¡Operación realizada con éxito!
+  </div>
+
+  <!-- Font Awesome Icons -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  
+  <script src="script.js">
+  </script>
+</body>
+</html>
