@@ -1,7 +1,9 @@
 // Variables globales
+// Se declara un arreglo global que contendrá objetos de tareas, cada una con texto, estado de completado, fecha e ID.
     let tareas = [];
-    
-    // Elementos DOM
+
+// Elementos DOM
+//Se almacenan referencias a los elementos del HTML para interactuar con ellos (input, botones, lista, notificación, etc.).
     const input = document.getElementById("tareaInput");
     const boton = document.getElementById("agregarBtn");
     const lista = document.getElementById("listaTareas");
@@ -11,7 +13,7 @@
     const limpiarBtn = document.getElementById("limpiarBtn");
     const jsonPreview = document.getElementById("jsonPreview");
     const notification = document.getElementById("notification");
-    
+
     // Inicialización
     window.onload = function() {
       cargarTareas();
@@ -31,6 +33,9 @@
     };
     
     // Funciones de gestión de tareas
+    //Toma el texto que escribiste, verifica que no esté vacío, 
+    // crea una nueva tarea con ID único, fecha y estado pendiente, la guarda en la lista, 
+    // muestra en pantalla, limpia el input y lanza una notificación.
     function agregarTarea() {
       const texto = input.value.trim();
       
@@ -56,6 +61,8 @@
       mostrarNotificacion("Tarea agregada correctamente");
     }
     
+    // Busca y elimina la tarea que tenga ese ID de la lista, 
+    // luego actualiza la pantalla y guarda los cambios.
     function eliminarTarea(id) {
       tareas = tareas.filter(tarea => tarea.id !== id);
       guardarTareas();
@@ -64,6 +71,8 @@
       mostrarNotificacion("Tarea eliminada");
     }
     
+    //Cambia el estado de una tarea (de completada a pendiente o viceversa) y 
+    //actualiza la lista y el almacenamiento.
     function toggleCompletada(id) {
       tareas = tareas.map(tarea => 
         tarea.id === id ? {...tarea, completada: !tarea.completada} : tarea
@@ -72,7 +81,8 @@
       renderizarTareas();
       actualizarVistaJson();
     }
-    
+    // Si todas las tareas están marcadas como completadas, las pone como pendientes; 
+    // si no, las marca todas como completadas, y muestra un mensaje según el caso.
     function marcarTodasTareas() {
       const todasCompletadas = tareas.every(t => t.completada);
       
@@ -91,7 +101,8 @@
         "Todas las tareas marcadas como completadas"
       );
     }
-    
+    //Elimina todas las tareas que ya están completadas de la lista, 
+    //actualiza la pantalla y guarda los cambios.
     function limpiarTareasCompletadas() {
       tareas = tareas.filter(tarea => !tarea.completada);
       guardarTareas();
@@ -101,20 +112,28 @@
     }
     
     // Funciones de persistencia
+    //Convierte la lista de tareas a texto en formato JSON y 
+    // la guarda en el almacenamiento local del navegador.
     function guardarTareas() {
       localStorage.setItem('tareas', JSON.stringify(tareas));
     }
     
+    //Busca si hay tareas guardadas en el navegador y 
+    //las convierte de texto a una lista para usarlas.
     function cargarTareas() {
       const tareasGuardadas = localStorage.getItem('tareas');
       tareas = tareasGuardadas ? JSON.parse(tareasGuardadas) : [];
     }
     
     // Funciones de JSON
+    //Muestra las tareas como texto en 
+    // formato JSON dentro de un área en la pantalla.
     function actualizarVistaJson() {
       jsonPreview.textContent = JSON.stringify(tareas, null, 2);
     }
     
+    //Crea un archivo con las tareas en formato JSON 
+    // y lo descarga automáticamente.
     function descargarJson() {
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tareas, null, 2));
       const downloadAnchorNode = document.createElement('a');
@@ -126,7 +145,8 @@
       
       mostrarNotificacion("Archivo JSON descargado");
     }
-    
+    // Copia el texto JSON de las tareas al portapapeles y 
+    // muestra un mensaje si tuvo éxito o falló.
     function copiarJson() {
       const jsonContent = JSON.stringify(tareas, null, 2);
       navigator.clipboard.writeText(jsonContent)
@@ -139,13 +159,14 @@
     }
     
     // Funciones de UI
+    // Limpia la lista en pantalla y vuelve a dibujar todas las tareas una por una con sus 
+    // botones de marcar y eliminar; si no hay tareas, muestra un mensaje diciendo que la lista está vacía.
     function renderizarTareas() {
       lista.innerHTML = '';
       
       if (tareas.length === 0) {
         lista.innerHTML = `
           <div class="empty-state">
-            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2NjYyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjEwIj48L2NpcmNsZT48bGluZSB4MT0iMTIiIHkxPSI4IiB4Mj0iMTIiIHkyPSIxMiI+PC9saW5lPjxsaW5lIHgxPSIxMiIgeTE9IjE2IiB4Mj0iMTIuMDEiIHkyPSIxNiI+PC9saW5lPjwvc3ZnPg==" alt="Lista vacía">
             <h3>No hay tareas</h3>
             <p>Comienza agregando una nueva tarea</p>
           </div>
@@ -176,6 +197,8 @@
       });
     }
     
+    //Muestra un pequeño mensaje en pantalla 
+    //que desaparece después de 3 segundos.
     function mostrarNotificacion(mensaje, tipo = "success") {
       notification.textContent = mensaje;
       notification.className = "notification show";
